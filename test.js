@@ -5,6 +5,9 @@ const uuid = require('uuid');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
+
 const cors = require('cors');
 const { json } = require('body-parser');
 const request = require('request');
@@ -12,7 +15,7 @@ const request = require('request');
 const app = express();
 const sessionId = uuid.v4();
  
-const http = require('http').Server(app); 
+//const http = require('http').Server(app); 
 app.use(bodyParser.json({limit: '500000mb'}));
 app.use(bodyParser.urlencoded({limit: '500000mb', extended: false, parameterLimit: 10000000000}));
 app.use((req, res, next)=>{
@@ -24,9 +27,18 @@ app.use((req, res, next)=>{
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+var options={
+  //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
+  key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
+  cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+  }
+
+
 app.get('/', function(req, res) {
     res.sendFile('bot.html');
   });
+
+
 
   app.post('/send-msg', function(req, res) {
     console.log(req.body.MSG);
@@ -115,7 +127,11 @@ async function runSample(msg,projectId = 'logisfaq-oblb') {
 ``
 
 
-http.listen(3001,(err)=>{
-    if(err) throw err;
-      console.log('Listing To port http://localhost:3001');
-})
+// http.listen(3001,(err)=>{
+//     if(err) throw err;
+//       console.log('Listing To port http://localhost:3001');
+// })
+//app.listen(5444);
+https.createServer(options, app).listen(5444, () => {
+  console.log('Express server started on port 5444');
+});

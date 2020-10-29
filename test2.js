@@ -3,6 +3,10 @@ const cors = require('cors')
 const express = require('express');
 const bodyParser = require('body-parser');
 var rp = require('request-promise');
+const path = require('path');
+const https = require('https');
+const fs = require('fs');
+
 const {
   dialogflow,
    Permission,
@@ -10,13 +14,17 @@ const {
  } = require('actions-on-google');
 
 const server = express();
-const http = require('http').Server(server); 
+//const http = require('http').Server(server); 
 
 const app = dialogflow();
 server.use(compression())
 server.use(bodyParser.json())
 server.use(cors());
-
+var options={
+  //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
+  key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
+  cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+  }
 
 
 // Handle the Dialogflow intent named 'Default Welcome Intent'.
@@ -150,8 +158,11 @@ app.intent('order_status', (conv) => {
   
   server.post('/webhook', app);
   
-  http.listen(3002,(err)=>{
-    if(err) throw err;
-      console.log('Listing To port http://localhost:3002');
-})
+//   http.listen(3002,(err)=>{
+//     if(err) throw err;
+//       console.log('Listing To port http://localhost:3002');
+// })
+https.createServer(options, app).listen(5443, () => {
+  console.log('Express server started on port 5443');
+});
   
