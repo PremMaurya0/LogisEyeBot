@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "logisfaq-oblb",
+  "private_key_id": "f0290887e93e602477d3cb0dd927f83a0d7c518d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDPAq2ko8xqbdEP\nQsMbrWzJC2WEgy4MFLLkP+wOPFk9Xx/O5otZVHxflOWxQ9Vd5ZJQFvMI89vv6RRD\n2tlKLDIKz1KoY8Tm/7FMK2/Qf5WpS8JKRDnHQVwP9B4OWlP5PVoSapO0eK4q5I0W\nZyLcxDOjITMZs34gtNZ5b7RFZx6nNA0yK0c83W4mUVdj2DvesaW7CIqD2CjZDNIp\nimk3z4O7bbt9Xdxk4UVZ9lPd6jARl2gm3Hak8PZPnSZdn6i2qOsOpIKocrIr2TIK\nK1ETc6SLyHeW/iWhsiC+JavKsDHOoaneKbxfs+yuG9ekx7/7v9W6whnz0LjNW0Gl\nH/JD0HAJAgMBAAECggEABbC7qDZudJB/Oi2qIlUik+YxzLI0blWVU0vkh8Gl7Fd0\njuHse7CkWJZFuBk2wMWCP5xZ4umdJpugGHtoFK9hUsW/LmzLqVPnAkKBaNhQ+13f\nQd5dPjpwNuoNd3SJMWU72BzA4amdlAVDUZXVMf9csgPEHVU/RtPhv2XQLUY34/2w\nI3qyChgxlwSRuNeY6IkTeABNVA1FF2KqUSe9AN1NBjnMmOQ22qQXlB9YgU/9fUWy\nIAw1wYbQmEybW7mody+z9aLwXp/M4nKxddZOW5lBPSecFdvU2/+eRvsDo7iOBPk4\ndcT0lFeKFTLphfJteaUSsKtsQr+AycuFyde4hs46BwKBgQDt2VCPmgqKGwRGEIF/\npQfcb/m9/w//UJlJpBbLd//bwlPgrylrHP1oiEc3wWdU0ZRCFezf7W29Xqz63CYS\n+f9NOQ79oFCMN4jwWYs5G0rbVoZEl8QgrP63ZeZyNvkFUfDzMyFucN4zOXw0WxPb\nGUtET2MM26HDw6Sp2i7JPnXMmwKBgQDezuUox88HHRzKErUOfAcl3OONcgKeG2vU\ntuVZBwhxQmFt2xePf5o4utDpkix8SZP3kEjJag5TJKKhQzssmi2uaYdO88nUWfpL\n/Pfi1gnUltWZCDDkyyN+AbxCWqIbtv1jU13NJQfTo82BfLmW2/uXEbAPajX8dL6J\n9O6xJxFWKwKBgQCSsYlCSBtf+jG0lNGJzFsA1f8N85YGPcuM46s7apNfEodw+Bdv\nfL2+Du79sEbuxSPPbn5dza31McM2JTlGUvHmyt44Bvwmvsmyk0eOvQp6JO9Ctue7\nz3Z53ls27ji/0z3sgQiJeQtSRI4aLGIeq4cEZoIMmBk5CB0ytOJONDurKQKBgGHX\nQuRckboS+7B09JMOvejPjhFv7lxVuE1pn18v6nIp7zTZkAgQxb2Bs/nNmcFeYh7F\nemEQNIgoP05HgrW8YrEDYEq4XXnlpTc3N/ehfCGhttyDr0zZM5XC11PgDu3StoSm\neDt8tmomtTjWd30azulw9/pc7qYU8hMMvsCGYmOPAoGBAJ95YOhjqiBWlda6PJ4u\nvK7WJfpVcPXGK3g2lx7c2XRmMxmVLQ/6SJSMXN8qf3PS0M2rCauAx8PqE6ZeRuZA\nzfsPXjK17XAj5gcw5pl/lzaIkKlI3270dtRxHEFNsilWibGHX7PvdDEda7M6t4HZ\nKdhpSGgRcdgNRYIAlJaZlVHG\n-----END PRIVATE KEY-----\n",
+  "client_email": "dialogflow-lllanx@logisfaq-oblb.iam.gserviceaccount.com",
+  "client_id": "113464968255407833421",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dialogflow-lllanx%40logisfaq-oblb.iam.gserviceaccount.com"
+}
