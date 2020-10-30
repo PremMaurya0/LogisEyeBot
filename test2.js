@@ -28,7 +28,7 @@ var options={
 
 
 // Handle the Dialogflow intent named 'Default Welcome Intent'.
-app.intent('order_status', (conv) => {
+app.intent('Default Welcome Intent', (conv) => {
      //conv.user.storage = {}; // to reset user data everytime 
     // conv.ask(new Suggestions('Yes'));
     const name = conv.user.storage.userName;
@@ -85,7 +85,7 @@ app.intent('order_status', (conv) => {
   });
   
   
-  app.intent('shipmentstatus', (conv, {shipmentNo} )=> {
+  app.intent('order_status', (conv, {shipmentNo} )=> {
  
      return callApiOrder(shipmentNo,conv.user.storage.token).then((output) => {  
       conv.ask(output); 
