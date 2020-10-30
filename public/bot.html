@@ -324,7 +324,7 @@ var obj = {
   },
   
 };
-fetch('http://13.235.93.178:3001/send-msg', obj)
+fetch('https://velozitystudio.com:5444/send-msg', obj)
     .then((response) => response.json())
     .then((res) => {
       if (res.status < 200 || res.status >= 300) {
