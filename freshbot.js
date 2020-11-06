@@ -6,18 +6,22 @@ const fs = require('fs');
 const cors = require('cors');
 const request = require('request');
 var sessionstorage = require('sessionstorage');
-
+const https = require('https');
 // Init App
 const app = express();
  
-const http = require('http').Server(app); 
+//const http = require('http').Server(app); 
 
 
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
   }
-
+  var options={
+    //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
+    key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
+    cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+    }
 
 app.use(bodyParser.json({limit: '500000mb'}));
 app.use(bodyParser.urlencoded({limit: '500000mb', extended: false, parameterLimit: 10000000000}));
@@ -162,7 +166,10 @@ app.get('/channel', function(req, res) {
  
 
 
-http.listen(3001,(err)=>{
-    if(err) throw err;
-      console.log('Listing To port http://localhost:3001');
-})
+// http.listen(3001,(err)=>{
+//     if(err) throw err;
+//       console.log('Listing To port http://localhost:3001');
+// })
+https.createServer(options, app).listen(5441, () => {
+  console.log('Express server started on port 5441');
+});

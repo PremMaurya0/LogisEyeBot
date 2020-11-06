@@ -436,7 +436,7 @@ a{
           //  console.log(newText);
             $.ajax({
             type: "Post",
-            url: "http://13.235.93.178:3001/newconversation",
+            url: "https://velozitystudio.com:5441/newconversation",
             data: data,
             cache: false,
             success: function(result){
@@ -459,7 +459,7 @@ const msglist = () => {
    
         $.ajax({
   type: "Get",
-  url: "http://13.235.93.178:3001/allconversationList?storage="+localStorage.getItem("userID"),
+  url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID"),
   cache: false,
   success: function(result){
    var data=JSON.parse(result);
@@ -545,7 +545,7 @@ const send = () => {
         
         $.ajax({
         type: "Post",
-        url: "http://13.235.93.178:3001/newuser",
+        url: "https://velozitystudio.com:5441/newuser",
         data: data,
         cache: false,
         success: function(result){
