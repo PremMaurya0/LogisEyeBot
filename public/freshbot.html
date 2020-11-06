@@ -4,49 +4,255 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="bot.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<style>
+body {
+  background:#eee;
+  height:100%;
+}
+.mainHead {
+  position:fixed;
+  width:100%;
+  height:100%;
+}
+.head {
+  height:50px;
+  background:#00303f;
+  color:white;
+  font-family:monospace;
+  position:relative;
+}
+.head span {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:18px;
+}
+.chat {
+  top:50px;
+  position:relative;
+  z-index:-1;
+  bottom:40px;
+  margin-bottom:100px;
+}
+.main {
+  overflow-y:auto;
+}
+.send {
+  width:100%;
+  position:fixed;
+  bottom:0px;
+  margin-right:10px;
+  background:white;
+  display:inline-flex;
+}
+.send .txt1 {
+  width:100%;
+  padding:5px;
+  margin:5px;
+  color:#00303f;
+  font-weight:bold;
+}
+.send .txt1:focus {
+  border-color:#00303f;
+}
+.send .btn1 {
+  color:silver;
+  background:#00303f;
+  width:70px;
+  margin:5px;
+  height:40px;
+}
+.txt {
+  background:#c9e1be;
+  padding:5px;
+  position:relative;
+  border-right: 2px solid #00303f;
+}
+.txt2 {
+  background:#A1E7ED;
+  padding:5px;
+  position:relative;
+  border-left: 2px solid #0c757e;
+}
+.txt-div {
+  margin:5px;
+  padding:5px;
+  width:80%;
+  float:right;
+}
+
+.txt-div2 {
+  margin:5px;
+  padding:5px;
+  width:80%;
+  float:left;
+}
+.time {
+  font-size:12px;
+  background:#c9e1be;
+  padding:5px;
+  border-right: 2px solid #00303f;
+}
+.time2 {
+  font-size:12px;
+  background:#A1E7ED;
+  padding:5px;
+  border-left: 2px solid #0c757e;
+}
+
+
+
+
+</style>
 </head>
 <body>
 
+    <div class="mainHead">
+        <div class="head">
+          <span>ChatBot</span>
+        </div>
+         </div> 
+        <div class="chat">
+          <div class="main">
+          </div>
+        </div>
+        <div class="send">
+          <!--<input type="input" class="txt1 form-cotrol">-->
+          <textarea class="form-control txt1" rows="3"></textarea>
+          <input type="button" class="btn btn1" value="SEND" onclick="sendmsg()">
+        </div>
 
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <!-- <div>
+        <input type="text"  id="msg"/>
+        <input type="button" value="Send" onclick="sendmsg()"/>
+    
+    </div> -->
+
+    
+<div id="loginform">
+
+    <input type="text"  id="email" placeholder="email"/>
+    <input type="text"  id="fname" placeholder="fname"/>
+    <input type="text"  id="lname" placeholder="lname"/>
+    <input type="button" value="Send" onclick="send()"/>
+
+
+</div>
+
+
+    
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
+
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
+
+
     <script>
+function checking(){
+    if(localStorage.getItem("userID")==null || localStorage.getItem("userID")==undefined){
+        $("#loginform").show();
+    }else{
+        $("#loginform").hide();
+    }
 
-const send = () => {
-
-var data = {
-    email:"xyz@example.com",
-    fname:"XYZ",
-    lname:"XYZ2"
 }
-var obj = {
-  method: 'POST',
-  body:data,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  },
-  
-};
-fetch('http://localhost:3001/newuser', obj)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        let error = new Error(res.statusText);
-        throw error;
-      }
-      return res;
-    })
-    .then((res) => {
-        
-     console.log(res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
- 
+checking();
+const send = () => {
+    if(localStorage.getItem("userID")==null || localStorage.getItem("userID")==undefined){
+ $("#loginform").show();
+        var data = {
+            email:$("#email").val(),
+            fname:$("#fname").val(),
+            lname:$("#lname").val()
+        }
+        $.ajax({
+        type: "Post",
+        url: "http://localhost:3001/newuser",
+        data: data,
+        cache: false,
+        success: function(result){
+            console.log(result);
+            localStorage.setItem("userID", result.id);
+        }
+        });
+    }else{
+        $("#loginform").hide();
+    }
+
 };
 
-send();
+const sendmsg = () => {
+    alert();
+var data ={message:$(".txt1").val()}
+console.log(data);
+$.ajax({
+  type: "Post",
+  url: "http://localhost:3001/newconversation",
+  data: data,
+  cache: false,
+  success: function(result){
+    var data=JSON.parse(result);
+    msglist();
+  }
+});
+
+};
+
+//setInterval(() => {
+   
+//}, 2000);
+
+
+const msglist = () => {
+$.ajax({
+  type: "Get",
+  url: "http://localhost:3001/allconversationList",
+  cache: false,
+  success: function(result){
+   var data=JSON.parse(result);
+   $('.main').html('');
+     for(var x=0;x<data.messages.length;x++){
+         if(data.messages[x].actor_type=="user"){
+            sender(data.messages[x].message_parts[0].text.content);
+   
+         } 
+         if(data.messages[x].actor_type=="agent"){
+            res(data.messages[x].message_parts[0].text.content);
+        }
+    }
+   
+  }
+});
+
+};
+
+function sender(msg) {
+  //var msg = $('.txt1').val();
+  $('.main').append('<div class="txt-div" ><div class="txt msg">'+msg+'</div></div>');
+  $('.txt1').val('');
+  $('.chat').scrollTop = $('.chat').scrollHeight;
+}
+
+function res(msg) {
+  $('.main').append('<div class="txt-div2" ><div class="txt2 msg">'+msg+'</div></div>');
+}
+
+msglist();
+//$('.main').append('<div class="txt-div2" ><div class="txt2 msg">'+msg+'</div><div class="time2">'+new Date().toLocaleTimeString()+'</div></div>');
+
+
+
     </script>
     
 </body>
