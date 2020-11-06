@@ -73,9 +73,9 @@ app.get('/channel', function(req, res) {
         if (error) throw new Error(error);
         var jsonData=JSON.parse(response.body);
         console.log(jsonData);
-        localStorage.clear();
-        localStorage.removeItem("userId");
-        localStorage.removeItem('conversation_id')
+        // localStorage.clear();
+        // localStorage.removeItem("userId");
+        // localStorage.removeItem('conversation_id')
         
         localStorage.setItem('userId', jsonData.id);
         res.send(jsonData);
