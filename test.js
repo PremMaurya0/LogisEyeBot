@@ -108,30 +108,58 @@ async function runSample(msg,projectId = 'logisfaq-oblb') {
 
 
 
-// var options = {
-//   'method': 'POST',
-//   'url': 'https://alpha.logiseye.com/api/login/',
-//   'headers': {
-//     'Content-Type': 'application/json'
-//   },
-//   body: JSON.stringify({"username":"chatbot@logiseye.com","password":"Kochi$5678"})
 
-// };
-// request(options, function (error, response) {
-//   if (error) throw new Error(error);
-//   console.log(response.body);
-// });
  
 
+app.post('/sendlogin', function(req, res) {
+  console.log(req.body.username);
+  console.log(req.body.password);
+ var options = {
+  'method': 'POST',
+  'url': 'https://alpha.logiseye.com/api/login/',
+  'headers': {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({"username":req.body.username,"password":req.body.password})
 
-``
+};
+request(options, function (error, response) {
+  if (error) res.send("invalid");
+  try{
+    var data=JSON.parse(response.body);
+    res.send(data.token);
+  }catch(err){
+    res.send("invalid")
+  }
+  
+});
+});
 
 
-// http.listen(3001,(err)=>{
-//     if(err) throw err;
-//       console.log('Listing To port http://localhost:3001');
-// })
-//app.listen(5444);
+app.post('/shipmentstatus', function(req, res) {
+  console.log(req.body.shipmentNo);
+ var options = {
+  'method': 'GET',
+  'url': 'https://alpha.logiseye.com/shipment/'+req.body.shipmentNo+'/status/',
+  'headers': {
+    'Content-Type': 'application/json',
+    'Authorization': 'Token '+req.body.token
+  }
+};
+request(options, function (error, response) {
+ // if (error)  res.send("invalid");
+  try{
+    var data=JSON.parse(response.body);
+    res.send(data);
+  }catch(err){
+    res.send("invalid")
+  }
+  
+});
+});
+
+
+
 https.createServer(options, app).listen(5444, () => {
   console.log('Express server started on port 5444');
 });
