@@ -427,7 +427,7 @@ success: function(result){
 		}
 	 }
 	
-	$("#UserInputBox").keypress(function(e) {
+	$(".chatbot__input").keypress(function(e) {
 		if(e.which == 13) {
             UserMessageContainer.UserMessage(e,$("#UserInputBox").val());
            // console.log("===> ",$("#UserInputBox").val());
