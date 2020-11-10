@@ -416,83 +416,6 @@ a{
       <script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
 <script>
 
-(function () {
-  var $ChatInput;
-
-  $ChatInput = $('.ChatInput-input');
-
-  $ChatInput.keyup(function (e) {
-    var $this, newText;
-    if (e.shiftKey && e.which === 13) {
-      e.preventDefault();
-      return false;
-    }
-    $this = $(this);
-    if (e.which === 13) {
-      newText = $this.html();
-      $this.html('');
-
-            var data ={message:newText}
-          //  console.log(newText);
-            $.ajax({
-            type: "Post",
-            url: "https://velozitystudio.com:5441/newconversation",
-            data: data,
-            cache: false,
-            success: function(result){
-                console.log(result);
-                var data=JSON.parse(result);
-                msglist();
-            }
-            });
-
-        return $('.ChatWindow').animate({
-        scrollTop: $('.ChatWindow').prop("scrollHeight") },
-      500);
-    }
-  });
-
-}).call(this);
-
-
-const msglist = () => {
-   
-        $.ajax({
-  type: "Get",
-  url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID"),
-  cache: false,
-  success: function(result){
-   var data=JSON.parse(result);
-   
-   $('.ChatWindow').html('');
-   var element = document.getElementById('ChatWindowdiv');
-   element.style.display = 'none';
-   element.style.display = 'block';
- 
-   if(data.messages!=undefined){
-
-   data.messages.reverse();
-     for(var x=0;x<data.messages.length;x++){
-         if(data.messages[x].actor_type=="user"){
-            res(data.messages[x].message_parts[0].text.content);
-   
-         } 
-         if(data.messages[x].actor_type=="agent"){
-            sender(data.messages[x].message_parts[0].text.content);
-            
-        }
-    }
-    return $('.ChatWindow').animate({
-        scrollTop: $('.ChatWindow').prop("scrollHeight") },
-      1000);
-   
-  }
-}
-});
-
-    
-
-};
 
 
 
@@ -531,25 +454,62 @@ function checking(){
 
 }
 checking();
-//if(localStorage.getItem("userID")!==null){
-    setInterval(msglist, 3500);
-//}
+
+  const msglist = () => {
+ 
+
+  $.ajax({
+type: "Get",
+url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID")+"&convertId="+localStorage.getItem("cID"),
+cache: false,
+success: function(result){
+var data=JSON.parse(result);
+
+$('.ChatWindow').html('');
+var element = document.getElementById('ChatWindowdiv');
+element.style.display = 'none';
+element.style.display = 'block';
+
+if(data.messages!=undefined){
+
+data.messages.reverse();
+for(var x=0;x<data.messages.length;x++){
+   if(data.messages[x].actor_type=="user"){
+      res(data.messages[x].message_parts[0].text.content);
+
+   } 
+   if(data.messages[x].actor_type=="agent"){
+      sender(data.messages[x].message_parts[0].text.content);
+      
+  }
+}
+return $('.ChatWindow').animate({
+  scrollTop: $('.ChatWindow').prop("scrollHeight") },
+1000);
+
+}
+}
+});
+
+
+
+};
+
+  setInterval(msglist, 3500);
+
 
 const send = () => {
-
         var data = {
             email:$("#email").val(),
             fname:$("#fname").val(),
             lname:$("#lname").val()
-        }
-        
+        }  
         $.ajax({
         type: "Post",
         url: "https://velozitystudio.com:5441/newuser",
         data: data,
         cache: false,
         success: function(result){
-         console.log(result);
             localStorage.setItem("userID", result.id);
             $("#form").hide();
            $("#ChatWindowdiv").show();
@@ -558,6 +518,44 @@ const send = () => {
     
 
 };
+
+
+var $ChatInput;
+
+$ChatInput = $('.ChatInput-input');
+
+$ChatInput.keyup(function (e) {
+  var $this, newText;
+  if (e.shiftKey && e.which === 13) {
+    e.preventDefault();
+    return false;
+  }
+  $this = $(this);
+  if (e.which === 13) {
+    newText = $this.html();
+    $this.html('');
+
+          var data ={message:newText}
+          $.ajax({
+          type: "Post",
+          url: "https://velozitystudio.com:5441/newconversation?userId="+localStorage.getItem("userID"),
+          data: data,
+          cache: false,
+          success: function(result){
+              
+              var data=JSON.parse(result);
+              localStorage.setItem("cID",data.conversation_id)
+              msglist();
+          }
+          });
+
+      return $('.ChatWindow').animate({
+      scrollTop: $('.ChatWindow').prop("scrollHeight") },
+    500);
+  }
+});
+
+
 
 </script>      
 

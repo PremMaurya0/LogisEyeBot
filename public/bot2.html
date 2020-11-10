@@ -18,6 +18,9 @@
 			margin: 0px;
 			padding: 0px;
 			list-style: none;
+            /* position: fixed;
+            z-index: 99999;
+            top: 16px; */
 		}
 		ul.tabs li{
 			/* background: none; */
@@ -714,12 +717,14 @@ if(tabname=="agent"){
         var datajson ={message:msg}
             $.ajax({
             type: "Post",
-            url: "https://velozitystudio.com:5441/newconversation",
+            url: "https://velozitystudio.com:5441/newconversation?userId="+localStorage.getItem("userID"),
             data: datajson,
             cache: false,
             success: function(result){
                 var data=JSON.parse(result);
-               // msglist();
+                
+                localStorage.setItem("cID",data.conversation_id)
+                 msglist();
             },error:function(err){
                 console.log(err);
             }
@@ -736,33 +741,6 @@ if(tabname=="agent"){
 	});
 
 
-const msglist = () => {
-        $.ajax({
-                type: "Get",
-                url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID"),
-                cache: false,
-                success: function(result){
-                var data=JSON.parse(result);  
-                    $('.chatbot__messages3').html('');
-                var element = document.getElementById('ChatWindowdiv');
-                if(data.messages!=undefined){
-                data.messages.reverse();
-                    for(var x=0;x<data.messages.length;x++){
-                        if(data.messages[x].actor_type=="user"){
-                        res(data.messages[x].message_parts[0].text.content);
-                        
-                        }
-                        if(data.messages[x].actor_type=="agent"){
-                        sender(data.messages[x].message_parts[0].text.content);
-                            
-                        }
-                    }
-                    scrollDown();
-                }
-            }
-        });
-
-};
 
 
 function sender(msg) {
@@ -805,6 +783,34 @@ function checking(){
     }
 }
 checking();
+const msglist = () => {
+        $.ajax({
+                type: "Get",
+                url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID")+"&convertId="+localStorage.getItem("cID"),
+                cache: false,
+                success: function(result){
+                var data=JSON.parse(result);  
+                    $('.chatbot__messages3').html('');
+                var element = document.getElementById('ChatWindowdiv');
+                if(data.messages!=undefined){
+                data.messages.reverse();
+                    for(var x=0;x<data.messages.length;x++){
+                        if(data.messages[x].actor_type=="user"){
+                        res(data.messages[x].message_parts[0].text.content);
+                        
+                        }
+                        if(data.messages[x].actor_type=="agent"){
+                        sender(data.messages[x].message_parts[0].text.content);
+                            
+                        }
+                    }
+                    scrollDown();
+                }
+            }
+        });
+
+};
+
 
 setInterval(msglist, 3500);
 $("#next").click(function(){
@@ -820,6 +826,7 @@ $("#next").click(function(){
         cache: false,
         success: function(result){
             localStorage.setItem("userID", result.id);
+            
              $("#msform").hide();
              $("#msg").show();
              $("#agent").show();    
