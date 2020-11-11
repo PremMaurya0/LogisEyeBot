@@ -15,12 +15,16 @@
 	
 
 		ul.tabs{
-			margin: 0px;
-			padding: 0px;
-			list-style: none;
-            /* position: fixed;
-            z-index: 99999;
-            top: 16px; */
+			left: 0;
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+            top: 54px;
+            right: 0;
+            position: absolute;
+            width: 100%;
+            list-style: none;
+            background: #fff;
 		}
 		ul.tabs li{
 			/* background: none; */
@@ -91,9 +95,10 @@
         <div class="chatbot__message-window">
             <div class="container">
                 <ul class="tabs">
-                    <li class="tab-link current" data-tab="tab-1" onclick="tabtype('queries')">Queries</li>
-                    <li class="tab-link" data-tab="tab-2" onclick="tabtype('status')" id="StartChat" class="StartChat">Shipment</li>
-                    <li class="tab-link" data-tab="tab-3" onclick="tabtype('agent')"> Execute</li>
+                    <li class="tab-link current" data-tab="tab-1" onclick="tabtype('queries')">FAQ</li>
+                    <li class="tab-link" data-tab="tab-2" onclick="tabtype('status')" id="StartChat" class="StartChat">Check Status</li>
+                    <li class="tab-link" data-tab="tab-3" onclick="tabtype('agent')">Executive Support
+                    </li>
                     
                 </ul>
             
@@ -101,7 +106,7 @@
                 
 
 
-                    <ul class="chatbot__messages">
+                    <ul class="chatbot__messages scrollbar">
                         <li class="is-ai animation">
                           <div class="is-ai__profile-picture">
                             <svg class="icon-avatar" viewBox="0 0 32 32">
@@ -118,7 +123,7 @@
                 </div>
                 <div id="tab-2" class="tab-content">
                     
-                     <ul class="chatbot__messages" id="chatwindow">
+                     <ul class="chatbot__messages scrollbar" id="chatwindow">
                       <li class="is-ai animation">
                             <!-- <div class="is-ai__profile-picture">
                             <svg class="icon-avatar" viewBox="0 0 32 32">
@@ -147,7 +152,17 @@
                             </fieldset>
                     </div>
                     <div id="msg">
-                        <ul class="chatbot__messages chatbot__messages3" id="ChatWindowdiv">                            
+                        <ul class="chatbot__messages chatbot__messages3 scrollbar" id="ChatWindowdiv"> 
+                            <li class="is-ai animation">
+                                <div class="is-ai__profile-picture">
+                                  <svg class="icon-avatar" viewBox="0 0 32 32">
+                                    <use xlink:href="#avatar" />
+                                  </svg>
+                                </div>
+                                <span class="chatbot__arrow chatbot__arrow--left"></span>
+                                <p class='chatbot__message'>Hi there 🖐. I’m Logibot, your virtual assistant. I'm here to help with your general enquiries.</p>
+                              </li>
+                              <!-- Answer and response added here -->                           
                          </ul>
                     </div>
                 </div>
@@ -245,6 +260,18 @@
       <script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
     
 <script>
+
+
+
+
+(function(){
+            let isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            let isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+            let scrollbarDiv = document.querySelector('.scrollbar');
+                if (!isChrome && !isSafari) {
+                scrollbarDiv.innerHTML = 'You need Webkit browser to run this code';
+                }
+            })();
 
 var suggession;
 //speech reco
@@ -468,7 +495,12 @@ function tabtype(tabname){
     }
     }
     if(tabname=="status"){
-
+        function clearLocalStorage(){
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        localStorage.removeItem("shiperNo");
+        localStorage.removeItem("greeting");
+    } 
     $('#queries').hide ();
     $('#statuscheck').show();
     $("#agents").hide();
@@ -497,6 +529,7 @@ function tabtype(tabname){
         </p>
         <span class='chatbot__arrow chatbot__arrow--right'></span>
         </li>`;
+        
     };
 
     const aiMessage = (content, isLoading = false, delay = 0) => {
@@ -565,7 +598,7 @@ const send = (email,password,number) => {
                                 $('.class123').hide();
                                 setResponse("Invalid Login Data!", botLoadingDelay + botReplyDelay);
                                 speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Login Data!"));
-                                localStorage.clear();
+                                clearLocalStorage();
                                 
                     }, 2000);
              }
@@ -584,7 +617,7 @@ const checkingStatus = (token,number) => {
                                 $('.class123').hide();
                                 setResponse("Invalid Data! Please enter correct data!", botLoadingDelay + botReplyDelay);
                                 speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Data! Please enter correct data!"));
-                                localStorage.clear();
+                                clearLocalStorage();
                                 scrollDown();
                     }, 2000);
             }else{
@@ -592,7 +625,7 @@ const checkingStatus = (token,number) => {
                                 $('.class123').hide();
                                 setResponse(result.data.status_text, botLoadingDelay + botReplyDelay);
                                 speechSynthesis.speak( new SpeechSynthesisUtterance(result.data.status_text));
-                                localStorage.clear();
+                                clearLocalStorage();
                                 scrollDown();
                     }, 2000);
             }
@@ -638,7 +671,7 @@ const checkingStatus = (token,number) => {
            }
 		}
     }
-    
+    clearLocalStorage();
 	var UserMessageContainer = {
     UserMessage: function (e,texttoinput) {
 	
@@ -811,7 +844,7 @@ const msglist = () => {
 
 };
 
-
+//msglist();
 setInterval(msglist, 3500);
 $("#next").click(function(){
     var data = {
