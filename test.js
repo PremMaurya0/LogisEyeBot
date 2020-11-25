@@ -158,7 +158,10 @@ request(options, function (error, response) {
 });
 });
 
-
+//   http.listen(3002,(err)=>{
+//     if(err) throw err;
+//       console.log('Listing To port http://localhost:3002');
+// })
 
 https.createServer(options, app).listen(5444, () => {
   console.log('Express server started on port 5444');

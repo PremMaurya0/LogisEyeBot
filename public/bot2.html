@@ -106,7 +106,7 @@
                 
 
 
-                    <ul class="chatbot__messages scrollbar">
+                    <ul class="chatbot__messages">
                         <li class="is-ai animation">
                           <div class="is-ai__profile-picture">
                             <svg class="icon-avatar" viewBox="0 0 32 32">
@@ -123,7 +123,7 @@
                 </div>
                 <div id="tab-2" class="tab-content">
                     
-                     <ul class="chatbot__messages scrollbar" id="chatwindow">
+                     <ul class="chatbot__messages" id="chatwindow">
                       <li class="is-ai animation">
                             <!-- <div class="is-ai__profile-picture">
                             <svg class="icon-avatar" viewBox="0 0 32 32">
@@ -137,20 +137,14 @@
                       </ul>
                 </div>
                 <div id="tab-3" class="tab-content">
-                    <div id="msform">
-                            <fieldset>
-                          <div class="input-group input-group-lg">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"> </span></span>
-                          <input type="text" class="form-control" placeholder="Frist Name" required id="fname">
-                            </div>
-                            <br>
-                            <div class="input-group input-group-lg">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"> </span></span>
-                            <input type="email" class="form-control" placeholder="email" id="email">
-                            </div><br>
-                                <input type="button" class="btn btn-success" value="Next" id="next">
-                            </fieldset>
+                    <div class="login" id="msform">                          
+                        <div class="login-container">
+                        <p><input type="test" placeholder="Frist Name" required id="fname"></p>
+                        <p><input type="email" placeholder="Email" id="email"></p>
+                        <p class="text-center"><button class="bot-bt" value="Next" id="next" value="Log in">Next</button></p>
+                        </div>
                     </div>
+
                     <div id="msg">
                         <ul class="chatbot__messages chatbot__messages3 scrollbar" id="ChatWindowdiv"> 
                             <li class="is-ai animation">
@@ -278,6 +272,10 @@ var suggession;
 try {
   var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   var recognition = new SpeechRecognition();
+  var voices = speechSynthesis.getVoices();
+    var derangedVoice = voices.filter(function (voice) {
+    return voice.name == 'Deranged';
+    })[0];
 }
 catch(e) {
   console.error(e);
@@ -456,7 +454,18 @@ function tabtype(tabname){
     scrollDown();
     return;
     };
-
+    $('.chatbot__submit1').click(function(e){
+        
+        if($chatbotInput.value==null || $chatbotInput.value==""){
+          //  alert("Required something Text2");
+        }else{
+            
+            send($chatbotInput.value)
+        }
+            
+          
+    });
+	
     const send = (text = "") => {
     var data = new URLSearchParams();
     data.append('MSG', text);
@@ -500,7 +509,9 @@ function tabtype(tabname){
         localStorage.removeItem("password");
         localStorage.removeItem("shiperNo");
         localStorage.removeItem("greeting");
+        localStorage.removeItem("greetings");
     } 
+    clearLocalStorage();
     $('#queries').hide ();
     $('#statuscheck').show();
     $("#agents").hide();
@@ -522,7 +533,7 @@ function tabtype(tabname){
     };
 
     const userMessage = (content) => {
-        console.log("User==> ",content);
+       // console.log("User==> ",content);
     $chatbotMessages1.innerHTML += `<li class='is-user animation'>
         <p class='chatbot__message'>
             ${content}
@@ -533,7 +544,7 @@ function tabtype(tabname){
     };
 
     const aiMessage = (content, isLoading = false, delay = 0) => {
-        console.log(content);
+        //console.log(content);
     setTimeout(() => {
         removeLoader();
         $chatbotMessages1.innerHTML += `<li 
@@ -639,8 +650,12 @@ const checkingStatus = (token,number) => {
 	var ProcessContainer = {
 			ProcessUserMessage: function (e,texttoinput) {
 			window.globalVar += 1;
-			$('.class123').hide();
-            if(localStorage.getItem("greeting")!=null && localStorage.getItem("username")==null){
+            $('.class123').hide();
+         //   console.log(localStorage.getItem("greetings"));
+	
+            if(localStorage.getItem("greetings")=="yes"){
+
+                if(localStorage.getItem("greeting")!=null && localStorage.getItem("username")==null){
                      setTimeout(function () {
                         $('.class123').hide();
                         setResponse('Please enter your logiseye Email?', botLoadingDelay + botReplyDelay);
@@ -669,12 +684,25 @@ const checkingStatus = (token,number) => {
                   
                     send(localStorage.getItem("username"),localStorage.getItem("password"),localStorage.getItem("shiperNo"));
            }
+            }
+            else  if(localStorage.getItem("greetings")=="No"){
+
+                        setResponse('Thank You', botLoadingDelay + botReplyDelay);
+                        speechSynthesis.speak( new SpeechSynthesisUtterance('Thank You')); 
+                        scrollDown();
+            }
+           
 		}
     }
     clearLocalStorage();
 	var UserMessageContainer = {
     UserMessage: function (e,texttoinput) {
-	
+       console.log(texttoinput);
+       if(texttoinput=="yes" || texttoinput=="Yes"){
+        localStorage.setItem("greetings","yes");
+       }else{
+        localStorage.setItem("greetings","No");
+       }
                  localStorage.setItem("greeting","hello");
 
                  if( localStorage.getItem("greeting")!=null && localStorage.getItem("username")==null){
@@ -690,16 +718,25 @@ const checkingStatus = (token,number) => {
                  }
         ProcessContainer.ProcessUserMessage(e,texttoinput);    
 		$("#UserInputBox").val("");
-    	}
+  
+      }
 	}
     $('.chatbot__submit2').click(function(e){
-            UserMessageContainer.UserMessage(e,$("#UserInputBox").val());
+       // alert($("#UserInputBox").val())
+        if($("#UserInputBox").val()==null || $("#UserInputBox").val()==""){
+            alert("Required something Text");
+        }else{
+            alert($("#UserInputBox").val());
             userMessage($("#UserInputBox").val());
-            aiMessage(loader, true, botLoadingDelay);
+           UserMessageContainer.UserMessage(e,$("#UserInputBox").val());
+           aiMessage(loader, true, botLoadingDelay);
+        }
+            
           
     });
 	
 	$("#UserInputBox").keypress(function(e) {
+    
 		if(e.which == 13) {
             if($("#UserInputBox").val()!=null || $("#UserInputBox").val()!=""){  
             userMessage($("#UserInputBox").val());
@@ -711,6 +748,7 @@ const checkingStatus = (token,number) => {
 	});
 
 	$(".message1").click(function(e){
+        alert(22)
         UserMessageContainer.UserMessage(e,$("#UserInputBox").val());
         userMessage($("#UserInputBox").val());
         aiMessage(loader, true, botLoadingDelay);
@@ -720,15 +758,48 @@ const checkingStatus = (token,number) => {
    
     function startstatus(){
         $("#UserInputBox").val("");
-        setResponse('Hello there! Welcome to LogiBot! Hi there 🖐. I’m Logibot, your virtual assistant.', botLoadingDelay + botReplyDelay);
-        speechSynthesis.speak( new SpeechSynthesisUtterance('Hello there! Welcome to LogiBot!')); 
+        $chatbotMessages1.innerHTML="";
+        setResponse('Hello there! Welcome to LogiBot! Hi there 🖐. I’m Logibot, your virtual assistant!', botLoadingDelay + botReplyDelay);
+        setResponse('Would you want check your order status? <div><button type="button" id="yesBtn" class="btn btn-success yes">Yes</button> <button type="button" class="btn btn-success no">No</button></div>', botLoadingDelay + botReplyDelay);
+   
+        speechSynthesis.speak( new SpeechSynthesisUtterance('Hello there! Welcome to LogiBot! Would you want check your order status?')); 
 		$('#usertextboxmessage').fadeIn(1000);
         $('#UserInputBox').focus();
         aiMessage(loader, true, botLoadingDelay);
-
+       
+       
     };
     startstatus();
-    recognition.onresult = (event) => {
+    $(document).on('click','.yes',function(e){
+        localStorage.setItem("greetings","yes");
+        yesdata(e);    
+    });
+    $(document).on('click','.no',function(e){
+        clearLocalStorage();
+        localStorage.setItem("greetings","No");
+        nodata(e);    
+    });
+    
+   
+        function yesdata(e){
+            
+            UserMessageContainer.UserMessage(e,'Yes');
+            userMessage('Yes');
+            clearLocalStorage();
+            localStorage.setItem("greetings","yes");
+           // $chatbotMessages1.innerHTML="";
+        }
+        function nodata(e){       
+            UserMessageContainer.UserMessage(e,'No');  
+            userMessage('No');      
+            localStorage.setItem("greetings","No");
+           // $chatbotMessages1.innerHTML="";
+            clearLocalStorage();
+            //startstatus();
+            
+        }
+
+        recognition.onresult = (event) => {
         const speechToText = event.results[0][0].transcript;
         UserMessageContainer.UserMessage(event,$("#UserInputBox").val());
         userMessage(speechToText);
