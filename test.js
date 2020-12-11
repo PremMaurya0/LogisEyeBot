@@ -41,7 +41,7 @@ app.get('/', function(req, res) {
 
 
   app.post('/send-msg', function(req, res) {
-    console.log(req.body.MSG);
+    
     runSample(req.body.MSG).then(data=>{
         console.log(data);
         res.send(data);
