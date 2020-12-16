@@ -21,15 +21,15 @@ server.use(compression())
 server.use(bodyParser.json())
 server.use(cors());
 var options={
-  //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
-  key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
-  cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+  
+  key: fs.readFileSync(path.join(__dirname,'ssl','logiseyelogibot.com.key'), 'utf8'),
+  cert: fs.readFileSync(path.join(__dirname,'ssl','463e828632464557.crt'), 'utf8'),
+  ca: [fs.readFileSync(path.join(__dirname,'ssl','gd1.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd2.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd3.crt'))]
   }
-
 
 // Handle the Dialogflow intent named 'Default Welcome Intent'.
 app.intent('Default Welcome Intent', (conv) => {
-     //conv.user.storage = {}; // to reset user data everytime 
+    // conv.user.storage = {}; // to reset user data everytime 
     // conv.ask(new Suggestions('Yes'));
     const name = conv.user.storage.userName;
     const emailaddress = conv.user.storage.emailaddress;
@@ -67,7 +67,9 @@ app.intent('Default Welcome Intent', (conv) => {
       // the 'conv.user.storage' object for future conversations.
     
     return callApitoken(params.mailid,params.password).then((output)=>{
-       // console.log("Frist time");
+      //  console.log(conv.context.get('replayQue'));
+       // console.log(conv.context.get('replayResponse'));
+
         conv.user.storage.userName = conv.user.name.display;
         conv.user.storage.emailaddress=params.mailid;
         conv.user.storage.password=params.password;
@@ -86,7 +88,9 @@ app.intent('Default Welcome Intent', (conv) => {
   
   
   app.intent('order_status', (conv, {shipmentNo} )=> {
- 
+   // console.log(conv.context.get('replayQue'));
+    //console.log(conv.context.get('replayResponse'));
+
      return callApiOrder(shipmentNo,conv.user.storage.token).then((output) => {  
       conv.ask(output); 
      // conv.close();

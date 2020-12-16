@@ -28,9 +28,10 @@ app.use((req, res, next)=>{
 app.use(express.static(path.join(__dirname, 'public')));
 
 var options={
-  //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
-  key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
-  cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+  
+  key: fs.readFileSync(path.join(__dirname,'ssl','logiseyelogibot.com.key'), 'utf8'),
+  cert: fs.readFileSync(path.join(__dirname,'ssl','463e828632464557.crt'), 'utf8'),
+  ca: [fs.readFileSync(path.join(__dirname,'ssl','gd1.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd2.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd3.crt'))]
   }
 
 
@@ -106,9 +107,6 @@ async function runSample(msg,projectId = 'logisfaq-oblb') {
 //runSample();
 
 
-
-
-
  
 
 app.post('/sendlogin', function(req, res) {
@@ -163,6 +161,6 @@ request(options, function (error, response) {
 //       console.log('Listing To port http://localhost:3002');
 // })
 
-https.createServer(options, app).listen(5444, () => {
-  console.log('Express server started on port 5444');
+https.createServer(options, app).listen(443, () => {
+  console.log('Express server started on port 443');
 });

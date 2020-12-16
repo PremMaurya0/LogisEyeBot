@@ -18,9 +18,10 @@ if (typeof localStorage === "undefined" || localStorage === null) {
     localStorage = new LocalStorage('./scratch');
   }
   var options={
-    //ca: fs.readFileSync(path.join(__dirname,'ssl','logiseyeTSS.pem'), 'utf8'),
-    key: fs.readFileSync(path.join(__dirname,'ssl','privkey.pem'), 'utf8'),
-    cert: fs.readFileSync(path.join(__dirname,'ssl','cert.pem'), 'utf8'),
+  
+    key: fs.readFileSync(path.join(__dirname,'ssl','logiseyelogibot.com.key'), 'utf8'),
+    cert: fs.readFileSync(path.join(__dirname,'ssl','463e828632464557.crt'), 'utf8'),
+    ca: [fs.readFileSync(path.join(__dirname,'ssl','gd1.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd2.crt')), fs.readFileSync(path.join(__dirname,'ssl','gd3.crt'))]
     }
 
 app.use(bodyParser.json({limit: '500000mb'}));
