@@ -477,7 +477,7 @@ function tabtype(tabname){
     },
     
     };
-    fetch('https://velozitystudio.com:5444/send-msg', obj)
+    fetch('https://www.logiseyelogibot.com/send-msg', obj)
         .then((response) => response.json())
         .then((res) => {
         if (res.status < 200 || res.status >= 300) {
@@ -599,7 +599,7 @@ function tabtype(tabname){
 const send = (email,password,number) => {
         $.ajax({
         type: "Post",
-        url: "https://velozitystudio.com:5444/sendlogin",
+        url: "https://www.logiseyelogibot.com/sendlogin",
         data: {'username': email,'password': password},
         success: function(result){
         console.log(result);
@@ -619,7 +619,7 @@ const send = (email,password,number) => {
 const checkingStatus = (token,number) => {
         $.ajax({
         type: "Post",
-        url: "https://velozitystudio.com:5444/shipmentstatus",
+        url: "https://www.logiseyelogibot.com/shipmentstatus",
         data: {'shipmentNo': number,"token":token},
         success: function(result){
             console.log(result);
@@ -807,7 +807,8 @@ const checkingStatus = (token,number) => {
 });
 
  }
-if(tabname=="agent"){
+
+ if(tabname=="agent"){
     const scrollDown = () => {
   const distanceToScroll =
     $chatbotMessageWindow.scrollHeight -
@@ -821,7 +822,7 @@ if(tabname=="agent"){
         var datajson ={message:msg}
             $.ajax({
             type: "Post",
-            url: "https://velozitystudio.com:5441/newconversation?userId="+localStorage.getItem("userID"),
+            url: "https://www.logiseyelogibot.com:5441/newconversation?userId="+localStorage.getItem("userID"),
             data: datajson,
             cache: false,
             success: function(result){
@@ -890,7 +891,7 @@ checking();
 const msglist = () => {
         $.ajax({
                 type: "Get",
-                url: "https://velozitystudio.com:5441/allconversationList?storage="+localStorage.getItem("userID")+"&convertId="+localStorage.getItem("cID"),
+                url: "https://www.logiseyelogibot.com:5441/allconversationList?storage="+localStorage.getItem("userID")+"&convertId="+localStorage.getItem("cID"),
                 cache: false,
                 success: function(result){
                 var data=JSON.parse(result);  
@@ -925,7 +926,7 @@ $("#next").click(function(){
         }   
         $.ajax({
         type: "Post",
-        url: "https://velozitystudio.com:5441/newuser",
+        url: "https://www.logiseyelogibot.com:5441/newuser",
         data: data,
         cache: false,
         success: function(result){
