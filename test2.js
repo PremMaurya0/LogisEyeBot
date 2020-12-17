@@ -89,10 +89,11 @@ app.intent('Default Welcome Intent', (conv) => {
   
   app.intent('order_status', (conv, {shipmentNo} )=> {
    // console.log(conv.context.get('replayQue'));
-    //console.log(conv.context.get('replayResponse'));
+   // console.log(conv.contexts.get('await_response'));
 
      return callApiOrder(shipmentNo,conv.user.storage.token).then((output) => {  
       conv.ask(output); 
+      conv.ask(new Suggestions('Next Order', 'No'));
      // conv.close();
     }).catch((err) => {    
       conv.ask(err); 
@@ -101,6 +102,30 @@ app.intent('Default Welcome Intent', (conv) => {
   
       
   });
+  app.intent('reprompt', (conv, {shipmentNo} )=> {
+    // console.log(conv.context.get('replayQue'));
+     //console.log(conv.contexts.get('await_response'));
+ 
+      return callApiOrder(shipmentNo,conv.user.storage.token).then((output) => {  
+       conv.ask(output); 
+       conv.ask(new Suggestions('Next Order', 'No'));
+      // conv.close();
+     }).catch((err) => {    
+       conv.ask(err); 
+       conv.close();
+     });
+   
+       
+   });
+
+
+  // app.intent('reprompt', (conv, {} )=> {
+  //   //app.intent("order_status")
+  //    console.log("enter reprompt");
+    
+       
+  //  });
+
  
  function callApitoken (email,password) {
 
