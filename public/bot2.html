@@ -477,7 +477,7 @@ function tabtype(tabname){
     },
     
     };
-    fetch('http://localhost:3002/send-msg', obj)
+    fetch('https://www.logiseyelogibot.com/send-msg', obj)
         .then((response) => response.json())
         .then((res) => {
         if (res.status < 200 || res.status >= 300) {
@@ -949,7 +949,7 @@ $(document).ready(function(){
        alert();
             $.ajax({
             type: "Get",
-            url: "http://localhost:3002/send-msg",
+            url: "https://www.logiseyelogibot.com/send-msg",
             cache: false,
             success: function(result){
               console.log(result)
