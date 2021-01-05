@@ -477,7 +477,7 @@ function tabtype(tabname){
     },
     
     };
-    fetch('https://www.logiseyelogibot.com/send-msg', obj)
+    fetch('http://localhost:3002/send-msg', obj)
         .then((response) => response.json())
         .then((res) => {
         if (res.status < 200 || res.status >= 300) {
@@ -487,7 +487,7 @@ function tabtype(tabname){
         return res;
         })
         .then((res) => {
-        speechSynthesis.speak( new SpeechSynthesisUtterance(res.txt))
+       // speechSynthesis.speak( new SpeechSynthesisUtterance(res.txt))
         setResponse(res, botLoadingDelay + botReplyDelay);
         })
         .catch((error) => {
@@ -608,7 +608,7 @@ const send = (email,password,number) => {
             setTimeout(function () {
                                 $('.class123').hide();
                                 setResponse("Invalid Login Data!", botLoadingDelay + botReplyDelay);
-                                speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Login Data!"));
+                                //speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Login Data!"));
                                 clearLocalStorage();
                                 
                     }, 2000);
@@ -627,7 +627,7 @@ const checkingStatus = (token,number) => {
                 setTimeout(function () {
                                 $('.class123').hide();
                                 setResponse("Invalid Data! Please enter correct data!", botLoadingDelay + botReplyDelay);
-                                speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Data! Please enter correct data!"));
+                               // speechSynthesis.speak( new SpeechSynthesisUtterance("Invalid Data! Please enter correct data!"));
                                 clearLocalStorage();
                                 scrollDown();
                     }, 2000);
@@ -635,7 +635,7 @@ const checkingStatus = (token,number) => {
                 setTimeout(function () {
                                 $('.class123').hide();
                                 setResponse(result.data.status_text, botLoadingDelay + botReplyDelay);
-                                speechSynthesis.speak( new SpeechSynthesisUtterance(result.data.status_text));
+                              //  speechSynthesis.speak( new SpeechSynthesisUtterance(result.data.status_text));
                                 clearLocalStorage();
                                 scrollDown();
                     }, 2000);
@@ -659,7 +659,7 @@ const checkingStatus = (token,number) => {
                      setTimeout(function () {
                         $('.class123').hide();
                         setResponse('Please enter your logiseye Email?', botLoadingDelay + botReplyDelay);
-                        speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your logiseye Email?'));
+                       // speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your logiseye Email?'));
                         scrollDown();
                     }, 2000);
            }
@@ -668,7 +668,7 @@ const checkingStatus = (token,number) => {
                         $('.class123').hide();
                           
                         setResponse('Please enter your password?', botLoadingDelay + botReplyDelay);
-                        speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your password?'));
+                      //  speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your password?'));
                         scrollDown();
                     }, 2000);
            }
@@ -676,7 +676,7 @@ const checkingStatus = (token,number) => {
                      setTimeout(function () {
                         $('.class123').hide(); 
                         setResponse('Please enter your shipment or order number?', botLoadingDelay + botReplyDelay);
-                        speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your shipment or order number?')); 
+                       // speechSynthesis.speak( new SpeechSynthesisUtterance('Please enter your shipment or order number?')); 
                         scrollDown();
                     }, 2000);
            }
@@ -688,7 +688,7 @@ const checkingStatus = (token,number) => {
             else  if(localStorage.getItem("greetings")=="No"){
 
                         setResponse('Thank You', botLoadingDelay + botReplyDelay);
-                        speechSynthesis.speak( new SpeechSynthesisUtterance('Thank You')); 
+                       // speechSynthesis.speak( new SpeechSynthesisUtterance('Thank You')); 
                         scrollDown();
             }
            
@@ -762,7 +762,7 @@ const checkingStatus = (token,number) => {
         setResponse('Hello there! Welcome to LogiBot! Hi there 🖐. I’m Logibot, your virtual assistant!', botLoadingDelay + botReplyDelay);
         setResponse('Would you want check your order status? <div><button type="button" id="yesBtn" class="btn btn-success yes">Yes</button> <button type="button" class="btn btn-success no">No</button></div>', botLoadingDelay + botReplyDelay);
    
-        speechSynthesis.speak( new SpeechSynthesisUtterance('Hello there! Welcome to LogiBot! Would you want check your order status?')); 
+      //  speechSynthesis.speak( new SpeechSynthesisUtterance('Hello there! Welcome to LogiBot! Would you want check your order status?')); 
 		$('#usertextboxmessage').fadeIn(1000);
         $('#UserInputBox').focus();
         aiMessage(loader, true, botLoadingDelay);
@@ -845,7 +845,7 @@ const checkingStatus = (token,number) => {
         }
 	});
 
-
+  
 
 
 function sender(msg) {
@@ -945,7 +945,21 @@ $("#next").click(function(){
 
 
 $(document).ready(function(){
-	
+	function sessiongen(){
+       alert();
+            $.ajax({
+            type: "Get",
+            url: "http://localhost:3002/send-msg",
+            cache: false,
+            success: function(result){
+              console.log(result)
+            },error:function(err){
+                console.log(err);
+            }
+            });
+           
+    }
+    sessiongen();
 	$('ul.tabs li').click(function(){
 		var tab_id = $(this).attr('data-tab');
 

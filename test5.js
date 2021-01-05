@@ -11,10 +11,10 @@ const fs = require('fs');
 const cors = require('cors');
 const { json } = require('body-parser');
 const request = require('request');
+const session = require('express-session') 
 // Init App
 const app = express();
-const sessionId = uuid.v4();
- 
+
 //const http = require('http').Server(app); 
 app.use(bodyParser.json({limit: '500000mb'}));
 app.use(bodyParser.urlencoded({limit: '500000mb', extended: false, parameterLimit: 10000000000}));
@@ -26,6 +26,21 @@ app.use((req, res, next)=>{
   });
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
+// Session Setup 
+app.use(session({ 
+  
+    // It holds the secret key for session 
+    secret: 'PremMauryaTSS', 
+  
+    // Forces the session to be saved 
+    // back to the session store 
+    resave: true, 
+  
+    // Forces a session that is "uninitialized" 
+    // to be saved to the store 
+    saveUninitialized: true
+})) 
+
 
 var options={
   
@@ -41,31 +56,47 @@ app.get('/', function(req, res) {
 
 
 
-  app.post('/send-msg', function(req, res) {
+  
+  
+  app.get('/send-msg', async function(req, res) {
     
-    runSample(req.body.MSG).then(data=>{
+    const sessionId = uuid.v4();
+    req.session.name = sessionId;
+    res.send(req.session.name);
+   // console.log("Init ==> ", req.session.name);
+  });
+  app.get('/send-msg2', async function(req, res) {
+    res.send(req.session.name);
+    //console.log("Get ==> ", req.session);
+  });
+
+  app.post('/send-msg', async function(req, res) {
+   
+    runSample(req.body.MSG,req.session.name).then(data=>{
         console.log(data);
         res.send(data);
     })
+    
   });
-  
-
-
 
 
 /**
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
  */
-async function runSample(msg,projectId = 'logisfaq-oblb') {
-  // A unique identifier for the given session
+async function runSample(msg,sessionid,projectId = 'logisfaq-oblb') {
+   
  
+  // A unique identifier for the given session
+  console.log("Inner== > ",sessionid);
+  //req.session.name = 'GeeksforGeeks'
   // Create a new session
   const sessionClient = new dialogflow.SessionsClient({
       keyFilename:"public/logisfaq-oblb-f0290887e93e.json"
   });
-  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
- 
+  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionid);
+ console.log("==> ",msg);
+
   // The text query request.
   const request = {
     session: sessionPath,
@@ -81,7 +112,7 @@ async function runSample(msg,projectId = 'logisfaq-oblb') {
  
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
-  console.log('Detected intent');
+  //console.log('Detected intent');
   const result = responses[0].queryResult;
   console.log(`  Query: ${result.queryText}`);
   //console.log(result.fulfillmentMessages[0].simpleResponses.simpleResponses[0].textToSpeech);
@@ -102,7 +133,7 @@ async function runSample(msg,projectId = 'logisfaq-oblb') {
   }else{
     newdata={txt:result.fulfillmentText,destinationName:"",uri:""}
   }
-  return newdata;
+  return await newdata;
 }
 //runSample();
 
@@ -161,6 +192,6 @@ request(options, function (error, response) {
 //       console.log('Listing To port http://localhost:3002');
 // })
 
-https.createServer(options, app).listen(4473, () => {
-  console.log('Express server started on port 443');
-});
+https.createServer(options, app).listen(443, () => {
+    console.log('Express server started on port 443');
+  });
