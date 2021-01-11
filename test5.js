@@ -7,14 +7,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const https = require('https');
 const fs = require('fs');
-
-const cors = require('cors');
-const { json } = require('body-parser');
 const request = require('request');
 const session = require('express-session') 
 // Init App
 const app = express();
-
 //const http = require('http').Server(app); 
 app.use(bodyParser.json({limit: '500000mb'}));
 app.use(bodyParser.urlencoded({limit: '500000mb', extended: false, parameterLimit: 10000000000}));
@@ -50,32 +46,35 @@ var options={
   }
 
 
-app.get('/', function(req, res) {
-    res.sendFile('bot.html');
-  });
-
-
+  app.get('/', function(req, res) {
+      res.sendFile('bot.html');
+    });
 
   
-  
-  app.get('/send-msg', async function(req, res) {
+  app.get('/send-msg', function(req, res) {
     
     const sessionId = uuid.v4();
     req.session.name = sessionId;
     res.send(req.session.name);
-   // console.log("Init ==> ", req.session.name);
+   
   });
-  app.get('/send-msg2', async function(req, res) {
+  app.get('/send-msg2', function(req, res) {
+    
+    console.log("Get ==> ", req.session);
     res.send(req.session.name);
-    //console.log("Get ==> ", req.session);
   });
 
   app.post('/send-msg', async function(req, res) {
    
-    runSample(req.body.MSG,req.session.name).then(data=>{
-        console.log(data);
-        res.send(data);
+   if(req.body.sessionToken!=""){
+    await runSample(req.body.MSG,req.body.sessionToken).then(data=>{
+      console.log(data);
+      res.send(data);
     })
+   }else{
+     console.log("Please refresh page");
+   }
+    
     
   });
 
@@ -89,7 +88,7 @@ async function runSample(msg,sessionid,projectId = 'logisfaq-oblb') {
  
   // A unique identifier for the given session
   console.log("Inner== > ",sessionid);
-  //req.session.name = 'GeeksforGeeks'
+
   // Create a new session
   const sessionClient = new dialogflow.SessionsClient({
       keyFilename:"public/logisfaq-oblb-f0290887e93e.json"
@@ -117,7 +116,6 @@ async function runSample(msg,sessionid,projectId = 'logisfaq-oblb') {
   console.log(`  Query: ${result.queryText}`);
   //console.log(result.fulfillmentMessages[0].simpleResponses.simpleResponses[0].textToSpeech);
   //console.log(result.fulfillmentMessages[1].linkOutSuggestion.destinationName);
-  //console.log(result.fulfillmentMessages[1].linkOutSuggestion.uri);
   
   //console.log(`  Response: ${result.fulfillmentText}`);
   if (result.intent) {

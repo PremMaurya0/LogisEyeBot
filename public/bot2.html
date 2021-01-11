@@ -480,6 +480,7 @@ function tabtype(tabname){
     fetch('https://www.logiseyelogibot.com/send-msg', obj)
         .then((response) => response.json())
         .then((res) => {
+          alert(333)
         if (res.status < 200 || res.status >= 300) {
             let error = new Error(res.statusText);
             throw error;
@@ -487,6 +488,7 @@ function tabtype(tabname){
         return res;
         })
         .then((res) => {
+          alert();
        // speechSynthesis.speak( new SpeechSynthesisUtterance(res.txt))
         setResponse(res, botLoadingDelay + botReplyDelay);
         })
